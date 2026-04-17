@@ -1,81 +1,50 @@
-const { parse } = require('dotenv');
+require('dotenv').config();
+
 const express = require('express');
-const models = require('./models');
+const cors = require('cors');
+const passport = require('./config/passport');
 const routes = require('./routes');
 
 const app = express();
 
-// Middleware: parse incoming JSON request bodies
+// Middleware
+app.use(
+    cors({ 
+        origin: process.env.FRONTEND_URL || "*",
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+    })
+);
+
 app.use(express.json());
 
-// Application-level middleware: attach models and session to every request
-app.use((req, res, next) => {
-    req.context = {
-        models,
-        me: models.users[1], // Temporarily hard-code the 'logged in' user
-    };
-    next(); // Always call next() to continue to the next middleware/route
-});
+app.use(passport.initialize());
 
-// Mount modular routes
-app.use('/users', routes.user);
+// Routes
+app.use('/auth', routes.auth);
 app.use('/posts', routes.post);
-app.use('/comments', routes.comment);
+app.use('/users', routes.user);
 
-// In-memory "database" for now (we will replace with Prisma later)
-let posts = [
-    { id: 1, title: "First Post", content: "Hello world!", published: true },
-    { id: 2, title: "Draft Post", content: "Work in progress", published: false },
-];
+// Nested route: /posts/:postId/comments
+app.use('/posts/:postId/comments', routes.comment);
 
-// GET / posts - return all posts
-app.get('/posts', (req, res) => {
-    res.json(posts);
+// Health check - useful for deployment platforms
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// GET / posts/:id - return a single post
-app.get('/posts/:id', (req, res) => {
-    const post = posts.find(p => p.id === parseInt(req.params.id));
-    if (!post) {
-        return res.status(404).json({ error: 'Post not found' });
-    }
-    res.json(post);
+// 404 Handler
+app.use((req, res) => {
+    res.status(404).json({ error: `Route ${req.method} ${req.path} not found` });
 });
 
-// POST /posts - create a new post
-app.post('/posts', (req, res) => {
-    const { title, content } = req.bodyM
-    const newPost = {
-        id: posts.length + 1,
-        title,
-        content,
-        published: false,
-    };
-    posts.push(newPost);
-    res.status(201).json(newPost);
-});
-
-// PUT /posts/:id - update a post
-app.put('/posts/:id', (req, res) => {
-    const index = posts.findIndex (p => p.id === parseInt(req.params.id));
-    if (index === -1) {
-        return res.status(404).json({ error: 'Post not found' });
-    }
-    posts[index] = { ...posts[index], ...req.body };
-    res.json(posts[index]);
-});
-
-// DELETE /posts/:id - delete a post
-app.delete('/posts/:id', (req, res) => {
-    const index = posts.findIndex(p => p.id === parseInt(req.params.id));
-    if (index === -1) {
-        return res.status(404).json({ error: 'Post not found' });
-    }
-    const deleted = posts.splice(index, 1);
-    res.json(deleted[0]);
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error('Unhandled error:', err.stack);
+    res.status(500).json({ error: 'An unexpected error occurred' });
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
