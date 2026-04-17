@@ -1,10 +1,26 @@
 const { parse } = require('dotenv');
 const express = require('express');
+const models = require('./models');
+const routes = require('./routes');
 
 const app = express();
 
 // Middleware: parse incoming JSON request bodies
 app.use(express.json());
+
+// Application-level middleware: attach models and session to every request
+app.use((req, res, next) => {
+    req.context = {
+        models,
+        me: models.users[1], // Temporarily hard-code the 'logged in' user
+    };
+    next(); // Always call next() to continue to the next middleware/route
+});
+
+// Mount modular routes
+app.use('/users', routes.user);
+app.use('/posts', routes.post);
+app.use('/comments', routes.comment);
 
 // In-memory "database" for now (we will replace with Prisma later)
 let posts = [
