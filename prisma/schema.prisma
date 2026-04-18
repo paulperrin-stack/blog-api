@@ -1,48 +1,41 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider    = "prisma-client-js"
-  engineType  = "library"
-  binaryTargets = ["native"]
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
 }
 
 model User {
-  id          String        @id @default(cuid())
-  username    String        @unique
-  email       String        @unique
-  password    String
-  isAuthor    Boolean       @default(false)
-  posts       Post[]
-  comments    Comment[]
-  createdAt   DateTime      @default(now())
+  id        String    @id @default(cuid())
+  username  String    @unique
+  email     String    @unique
+  password  String
+  isAuthor  Boolean   @default(false)
+  posts     Post[]
+  comments  Comment[]
+  createdAt DateTime  @default(now())
 }
 
 model Post {
-  id          String        @id @default(cuid())
-  title       String
-  content     String
-  published   Boolean       @default(false)
-  author      User          @relation(fields: [authorId], references: [id])
-  authorId    String
-  comments    Comment[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id        String    @id @default(cuid())
+  title     String
+  content   String
+  published Boolean   @default(false)
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Comment {
-  id          String        @id @default(cuid())
-  text        String
-  author      User          @relation(fields: [authorId], references: [id])
-  authorId    String
-  post        Post          @relation(fields: [postId], references: [id])
-  postId      String
-  createdAt   DateTime      @default(now())
+  id        String   @id @default(cuid())
+  text      String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  createdAt DateTime @default(now())
 }

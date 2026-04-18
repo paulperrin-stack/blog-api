@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Blog</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <h1><a href="/" id="home-link">Blog</a></h1>
+      <p class="tagline">
+        Reader (same origin as API) ·
+        <a href="/admin/">Author dashboard</a>
+      </p>
+    </header>
+
+    <aside class="auth-panel card" id="auth-panel">
+      <h2>Account</h2>
+      <p class="hint">Log in to comment (JWT in localStorage, per Odin assignment).</p>
+      <form id="login-form" class="inline-form">
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Log in</button>
+      </form>
+      <form id="register-form" class="inline-form">
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password (6+)" required />
+        <button type="submit">Register</button>
+      </form>
+      <p id="auth-status" class="status"></p>
+      <button type="button" id="logout-btn" class="hidden">Log out</button>
+    </aside>
+
+    <main>
+      <p id="status" class="status" aria-live="polite"></p>
+
+      <section id="list-view" class="panel">
+        <h2>Posts</h2>
+        <ul id="post-list" class="post-list"></ul>
+      </section>
+
+      <article id="detail-view" class="panel hidden" hidden>
+        <button type="button" id="back-btn" class="btn">← All posts</button>
+        <h2 id="detail-title"></h2>
+        <p class="meta" id="detail-meta"></p>
+        <div id="detail-body" class="body"></div>
+
+        <section class="comments-block">
+          <h3>Comments</h3>
+          <ul id="detail-comments" class="comments"></ul>
+          <div id="comment-form-wrap" class="hidden">
+            <label
+              >Add a comment
+              <textarea id="comment-text" rows="3" placeholder="Write something…"></textarea>
+            </label>
+            <button type="button" id="comment-submit">Post comment</button>
+          </div>
+          <p id="comment-login-hint" class="hint">Log in above to leave a comment.</p>
+        </section>
+      </article>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

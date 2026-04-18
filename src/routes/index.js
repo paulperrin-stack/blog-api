@@ -1,6 +1,6 @@
-const auth = require('./auth');
-const post = require('./post');
-const comment = require('./comment');
-const user = require('./user');
+import auth from './auth.js';
+import post from './post.js';
+import comment from './comment.js';
+import user from './user.js';
 
-module.exports = { auth, post, comment, user };
+export { auth, post, comment, user };

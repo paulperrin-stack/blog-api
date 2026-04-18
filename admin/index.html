@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin · Blog</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="top">
+      <h1>Author dashboard</h1>
+      <p class="sub"><a href="/">← Public blog</a></p>
+    </header>
+
+    <section id="login-panel" class="card">
+      <h2>Sign in (author)</h2>
+      <p class="hint">Need <code>isAuthor: true</code>. Seed: <code>author@example.com</code> / <code>changeme123</code></p>
+      <form id="login-form">
+        <label>Email <input type="email" name="email" required autocomplete="username" /></label>
+        <label>Password <input type="password" name="password" required autocomplete="current-password" /></label>
+        <button type="submit">Log in</button>
+      </form>
+      <p id="login-error" class="error" role="alert"></p>
+    </section>
+
+    <section id="dash-panel" class="hidden">
+      <div class="toolbar">
+        <button type="button" id="logout-btn">Log out</button>
+        <span id="dash-status" class="status"></span>
+      </div>
+
+      <div class="card">
+        <h2>New post</h2>
+        <form id="new-post-form">
+          <label>Title <input type="text" name="title" required /></label>
+          <label>Content <textarea name="content" rows="5" required></textarea></label>
+          <button type="submit">Create draft</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>All posts</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="posts-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
