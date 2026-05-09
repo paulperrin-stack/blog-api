@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, Link } from 'react-router-dom'
-import { useAuth } from "../auth/useAuth.js";
+import { useAuth } from "./auth/useAuth.js";
 import Login from './components/Login.jsx'
 import Dashboard from './components/Dashboard.jsx'
 import PostEditor from './components/PostEditor.jsx'
