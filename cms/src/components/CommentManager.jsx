@@ -25,12 +25,12 @@ export default function CommentManager() {
             <h2>Comments</h2>
             {comments.length === 0 && <p>No comments yet.</p>}
             <ul>
-                {comments.map((c) => {
+                {comments.map((c) => (
                     <li key={c.id}>
                         <strong>{c.user.username}:</strong> {c.content}{" "}
                         <button onClick={() => remove(c.id)}>Delete</button>
                     </li>
-                })}
+                    ))}
             </ul>
         </div>
     );

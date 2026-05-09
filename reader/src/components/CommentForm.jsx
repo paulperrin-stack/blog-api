@@ -15,7 +15,7 @@ export default function CommentForm({ postId, onAdded }) {
                 body: JSON.stringify({ username, password }),
             });
             localStorage.setItem("readerToken", data.token);
-            setToken(data.json);
+            setToken(data.token);
         } catch (err) {
             alert(err.message);
         }

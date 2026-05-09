@@ -17,7 +17,7 @@ app.use("/posts", postRoutes);
 app.use("/posts/:postId/comments", commentRoutes);
 
 app.use((err, req, res, _next) => {
-    console.err(err);
+    console.error(err);
     res.status(500).json({ message: err.message });
 });
 
