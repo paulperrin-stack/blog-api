@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams} from "react-router-dom";
 import { apiFetch } from "../api/client.js";
 import CommentForm from "./CommentForm.jsx";
@@ -7,8 +7,13 @@ export default function PostDetails() {
     const { id } = useParams();
     const [post, setPost] = useState(null);
 
-    const load = () => apiFetch(`/posts/${id}`).then(setPost);
-    useEffect(() => { load(); }, [id]);
+    const load = useCallback(() => {
+        apiFetch(`/posts/${id}`).then(setPost);
+    }, [id]);
+
+    useEffect(() => {
+        load();
+    }, [load]);
 
     if (!post) return <p>Loading...</p>;
 

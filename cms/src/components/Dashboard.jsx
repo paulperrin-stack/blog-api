@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiFetch } from "../api/client.js";
 
 export default function Dashboard() {
     const [posts, setPosts] = useState([]);
 
-    const load = () => apiFetch("/posts").then(setPosts);
-    useEffect(() => { load(); }, []);
+    const load = useCallback(() => apiFetch("/posts").then(setPosts), []);
+
+    useEffect(() => { load(); }, [load]);
 
     const togglePublish = async (post) => {
         await apiFetch(`/posts/${post.id}`, {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { apiFetch } from "../api/client.js";
 
@@ -6,8 +6,12 @@ export default function CommentManager() {
     const { id } = useParams();
     const [comments, setComments] = useState([]);
 
-    const load = () => apiFetch(`/posts/${id}/comments`).then(setComments);
-    useEffect(() => { load(); }, [id]);
+    const load = useCallback(
+        () => apiFetch(`/posts/${id}/comments`).then(setComments),
+        [id]
+    );
+
+    useEffect(() => { load(); }, [load]);
 
     const remove = async (commentId) => {
         if (!confirm("Delete this comment?")) return;
