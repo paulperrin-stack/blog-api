@@ -1,7 +1,6 @@
-import { createContext, useContext, useState } from 'react'
-import { apiFetch } from '../api/client.js'
-
-const AuthContext = createContext(null);
+import { useState } from "react";
+import { apiFetch } from "../api/client.js";
+import { AuthContext } from "./authContext.js";
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(() => {
@@ -32,5 +31,3 @@ export function AuthProvider({ children }) {
         </AuthContext.Provider>
     );
 }
-
-export const useAuth = () => useContext(AuthContext);

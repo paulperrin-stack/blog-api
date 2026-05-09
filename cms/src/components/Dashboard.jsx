@@ -40,7 +40,7 @@ export default function Dashboard() {
                             <td>{p.title}</td>
                             <td align="center">{p.published ? "✅ Published" : "📝 Draft"}</td>
                             <td align="center">
-                                <button onClick={() => togglePublished(p)}>
+                                <button onClick={() => togglePublish(p)}>
                                     {p.published ? "Unpublish" : "Publish"}
                                 </button>
                                 <Link to={`/edit/${p.id}`}><button>Edit</button></Link>
